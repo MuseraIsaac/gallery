@@ -32,7 +32,8 @@ pipeline{ //Gallery Pipeline
         stage('Deployment to Render'){
             steps{
                 //Deployment to production environment
-           
+           withCredentials([usernameColonPassword(credentialsId: 'render', variable: 'RENDER_CREDENTIALS')]){
+                sh 'git push https://${RENDER_CREDENTIALS}@git.render.com/gallery.git master'
             }
 
             }
