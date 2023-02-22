@@ -1,0 +1,56 @@
+pipeline{ //Gallery Pipeline
+    agent any
+    tools{
+        nodejs 'nodejs'
+    }
+    stages{
+        stage('Clone Repository'){
+            steps{
+                git 'https://github.com/MuseraIsaac/gallery.git'
+            }
+
+        }
+        stage('Build'){
+            steps{
+                //Building - Installing dependencies
+                sh 'npm install'
+                sh 'npm install body-parser'
+                sh 'npm install ejs'
+                sh 'npm install express'
+                sh 'npm install mongodb'
+                sh 'npm install mongoose'
+                sh 'npm install multer'
+                sh 'npm install uuid'
+            }
+        }
+        stage('Test'){
+            steps{
+                //Testing
+                sh 'npm test'
+            }
+        }
+        stage('Deployment to Heroku or Render'){
+            steps{
+                //Deployment to production environment
+            withCredentials([usernameColonPassword(credentialsId: 'heroku', variable: 'HEROKU_CREDENTIALS')]){
+                sh 'git push https://${HEROKU_CREDENTIALS}@git.heroku.com/ip01-gallery.git master'
+            }
+
+            }
+        }
+    }
+    post{
+        success{
+                //Slack Message 
+             slackSend( channel: "#project-test", token: "slack_webhook token", color: "good", message: "Slack channel gallery app success notification")
+        }
+        failure{
+                //Email on Failure
+                emailext body: "The Gallery Build has failed.  Please see details here: ${env.BUILD_URL} and attached.",
+                subject: "Jenkins Build - Job Name: ${env.JOB_NAME}, Build Number: ${env.BUILD_NUMBER}, Status - Failure",
+                to: 'isaac.musera@student.moringaschool.com',
+                attachLog: true
+
+        }
+    }
+}
