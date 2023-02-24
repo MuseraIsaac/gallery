@@ -34,8 +34,6 @@ pipeline{ //Gallery Pipeline
                 //Deployment to production environment
             sh 'curl -X POST https://api.render.com/deploy/srv-cfr1bs1mbjsgn6taaq90?key=S8l38QLU1VU&ref=${git log --oneline | awk '{print $1}' | head -n 1}'
             }
-
-            }
         }
     }
     post{
