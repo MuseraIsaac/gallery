@@ -37,7 +37,7 @@ pipeline{ //Gallery Pipeline
         }
     }
     post{
-        success{
+        always{
                 //Slack Message 
              slackSend( channel: "#project-test", token: "slack_webhook token", color: "good", message: "Slack channel gallery app success notification, Details: Job Name: ${env.JOB_NAME}, Buld Number: ${env.BUILD_NUMBER}, Click: ${env.BUILD_URL} to see the build details and click https://gallery-isaac.onrender.com/ to view app." )
         }
