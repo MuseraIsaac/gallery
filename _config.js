@@ -7,7 +7,4 @@ config.mongoURI = {
     test: 'mongodb+srv://Musera11:Blessed1@cluster1.ykhmd7r.mongodb.net/?retryWrites=true&w=majority',
 }
 module.exports = config;
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/test
